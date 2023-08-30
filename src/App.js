@@ -1,17 +1,17 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import './App.css'
-import { ClientsView } from './client/clients'
 import { ClientProfileView } from './client/profile'
 import { CreateClientView } from './admin/createClient'
 import { Login } from './auth/login'
 import { getAuth } from './api'
+import Dashboard from './admin/dashboard/dashboard'
 
 const isAuth = getAuth()
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: isAuth ? <ClientsView /> : <Login />,
+    element: isAuth ? <Dashboard /> : <Login />,
   },
   {
     path: '/client/:id',
