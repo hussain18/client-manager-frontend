@@ -8,14 +8,33 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
+import { login } from '../api'
+import { Alert, AlertTitle, Snackbar } from '@mui/material'
 
 const defaultTheme = createTheme()
 
 export const Login = () => {
+  const [snackOpen, setSnackOpen] = React.useState(false)
+  const [snackContent, setSnackContent] = React.useState({
+    message: '',
+    title: '',
+  })
   const [loginDetails, setLoginDetails] = React.useState({
     username: '',
     password: '',
   })
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return
+    }
+
+    setSnackOpen(false)
+    setSnackContent({
+      message: '',
+      title: '',
+    })
+  }
 
   const handleChange = (event) => {
     const newLoginDetails = { ...loginDetails }
@@ -24,9 +43,14 @@ export const Login = () => {
     setLoginDetails(newLoginDetails)
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
-    console.log(loginDetails) //test...
+    const { err } = await login(loginDetails)
+
+    if (err) {
+      setSnackContent({ message: err.message, title: err.statusText })
+      setSnackOpen(true)
+    }
   }
 
   return (
@@ -41,6 +65,21 @@ export const Login = () => {
             alignItems: 'center',
           }}
         >
+          <Snackbar
+            open={snackOpen}
+            autoHideDuration={6000}
+            onClose={handleClose}
+            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+          >
+            <Alert
+              onClose={handleClose}
+              severity='error'
+              sx={{ width: '100%' }}
+            >
+              <AlertTitle>{snackContent.title || 'Error'}</AlertTitle>
+              {snackContent.message}
+            </Alert>
+          </Snackbar>
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar>

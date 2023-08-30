@@ -4,8 +4,9 @@ import { ClientsView } from './client/clients'
 import { ClientProfileView } from './client/profile'
 import { CreateClientView } from './admin/createClient'
 import { Login } from './auth/login'
+import { getAuth } from './api'
 
-const isAuth = false
+const isAuth = getAuth()
 
 const router = createBrowserRouter([
   {
