@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { styled, createTheme, ThemeProvider } from '@mui/material/styles'
+import { styled, createTheme, ThemeProvider, alpha } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
 import MuiDrawer from '@mui/material/Drawer'
 import Box from '@mui/material/Box'
@@ -13,13 +13,55 @@ import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
 import MenuIcon from '@mui/icons-material/Menu'
+import SearchIcon from '@mui/icons-material/Search'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import { MainListItems, SecondaryListItems } from './listItems'
-import { Logout } from '@mui/icons-material'
+import { Logout, Person } from '@mui/icons-material'
 import { removeAuth } from '../../api'
 import { ClientsView } from '../../client/clients'
+import { InputBase } from '@mui/material'
 
 const drawerWidth = 240
+
+const Search = styled('div')(({ theme }) => ({
+  position: 'relative',
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  '&:hover': {
+    backgroundColor: alpha(theme.palette.common.white, 0.25),
+  },
+  marginRight: theme.spacing(2),
+  marginLeft: 0,
+  width: '100%',
+  [theme.breakpoints.up('sm')]: {
+    marginLeft: theme.spacing(3),
+    width: 'auto',
+  },
+}))
+
+const SearchIconWrapper = styled('div')(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: '100%',
+  position: 'absolute',
+  pointerEvents: 'none',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+}))
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: 'inherit',
+  '& .MuiInputBase-input': {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    transition: theme.transitions.create('width'),
+    width: '100%',
+    [theme.breakpoints.up('md')]: {
+      width: '20ch',
+    },
+  },
+}))
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
@@ -89,6 +131,10 @@ export default function Dashboard() {
     setTabSelected(newState)
   }
 
+  const handleSearchChange = async (event) => {
+    console.log(event.target.value)
+  }
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <Box sx={{ display: 'flex' }}>
@@ -120,6 +166,16 @@ export default function Dashboard() {
             >
               Dashboard
             </Typography>
+            <Search sx={{ flexGrow: 0.5 }}>
+              <SearchIconWrapper>
+                <SearchIcon />
+              </SearchIconWrapper>
+              <StyledInputBase
+                onChange={handleSearchChange}
+                placeholder='Search clients…'
+                inputProps={{ 'aria-label': 'search' }}
+              />
+            </Search>
             <IconButton color='inherit'>
               {/* <Person onClick={handleAdminPopperClick('top-end')} /> */}
               <Logout onClick={logout} />

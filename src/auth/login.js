@@ -45,11 +45,17 @@ export const Login = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    const { err } = await login(loginDetails)
+    const { err = null } = (await login(loginDetails)) ?? {}
 
     if (err) {
       setSnackContent({ message: err.message, title: err.statusText })
       setSnackOpen(true)
+      setLoginDetails({
+        username: '',
+        password: '',
+      })
+    } else {
+      window.location = '/'
     }
   }
 
