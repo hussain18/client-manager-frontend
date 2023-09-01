@@ -4,7 +4,7 @@ import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
-import { Button } from '@mui/material'
+import { Box, Button, Pagination } from '@mui/material'
 import Title from '../components/Title'
 
 const rows = [
@@ -71,6 +71,12 @@ const rows = [
 ]
 
 export function ClientsView() {
+  const [currentPage, setCurrentPage] = React.useState(1)
+
+  const handlePageChange = (event, page) => {
+    setCurrentPage(page)
+  }
+
   return (
     <React.Fragment>
       <Title>Clients List</Title>
@@ -100,6 +106,19 @@ export function ClientsView() {
           ))}
         </TableBody>
       </Table>
+      <Box
+        sx={{
+          margin: 1,
+          marginTop: 4,
+        }}
+      >
+        <Pagination
+          count={10}
+          size='small'
+          sx={{ justifyContent: 'end', display: 'flex' }}
+          onChange={handlePageChange}
+        />
+      </Box>
     </React.Fragment>
   )
 }
