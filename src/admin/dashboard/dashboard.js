@@ -109,12 +109,8 @@ const Drawer = styled(MuiDrawer, {
 
 const defaultTheme = createTheme()
 
-export default function Dashboard() {
+export default function Dashboard({ DisplayElement, tabSelected }) {
   const [open, setOpen] = React.useState(true)
-  const [tabSelected, setTabSelected] = React.useState({
-    dashboard: true,
-    addClient: false,
-  })
 
   const toggleDrawer = () => {
     setOpen(!open)
@@ -123,12 +119,6 @@ export default function Dashboard() {
   const logout = () => {
     removeAuth()
     window.location = '/'
-  }
-
-  const handleTabChange = (fieldName) => {
-    const newState = { dashboard: false, addClient: false }
-    newState[fieldName] = true
-    setTabSelected(newState)
   }
 
   const handleSearchChange = async (event) => {
@@ -197,10 +187,7 @@ export default function Dashboard() {
           </Toolbar>
           <Divider />
           <List component='nav'>
-            <MainListItems
-              tabSelected={tabSelected}
-              handleTabChange={handleTabChange}
-            />
+            <MainListItems tabSelected={tabSelected} />
             <Divider sx={{ my: 1 }} />
             <SecondaryListItems logout={logout} />
           </List>
@@ -223,7 +210,7 @@ export default function Dashboard() {
               {/* Recent Orders */}
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <ClientsView />
+                  <DisplayElement />
                 </Paper>
               </Grid>
             </Grid>

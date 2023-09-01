@@ -6,6 +6,7 @@ import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import { Box, Button, Pagination } from '@mui/material'
 import Title from '../components/Title'
+import Dashboard from '../admin/dashboard/dashboard'
 
 const rows = [
   {
@@ -120,5 +121,14 @@ export function ClientsView() {
         />
       </Box>
     </React.Fragment>
+  )
+}
+
+export function ClientsPage() {
+  return (
+    <Dashboard
+      DisplayElement={ClientsView}
+      tabSelected={{ dashboard: true, addClient: false }}
+    />
   )
 }
